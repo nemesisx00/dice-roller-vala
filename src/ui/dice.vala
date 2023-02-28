@@ -1,42 +1,43 @@
 using Gtk;
+using Diceroller;
 
-namespace Diceroller
+namespace Diceroller.UI
 {
-	public class DiceButtons : Grid
+	public class DiceButtons : Box
 	{
+		private const int Spacing = 5;
+		
 		public DiceButtons()
 		{
-			column_homogeneous = true;
-			row_homogeneous = true;
-			column_spacing = 5;
-			row_spacing = 5;
+			Object(orientation: Orientation.VERTICAL, spacing: Spacing);
+		}
+		
+		construct
+		{
+			append(generateRow({ 4, 6, 8 }));
+			append(generateRow({ 10, 12, 20 }));
+			append(generateRow({ 100 }));
+		}
+		
+		private Box generateRow(int[] sides)
+		{
+			var row = new Box(Orientation.HORIZONTAL, Spacing);
+			row.homogeneous = true;
 			
-			insert_column(0);
-			insert_column(0);
-			insert_column(0);
-			insert_row(0);
-			insert_row(0);
-			insert_row(0);
+			foreach(int s in sides)
+				row.append(new DieButton(s));
 			
-			attach(new DieButton(4), 0, 0, 1, 1);
-			attach(new DieButton(6), 1, 0, 1, 1);
-			attach(new DieButton(8), 2, 0, 1, 1);
-			
-			attach(new DieButton(10), 0, 1, 1, 1);
-			attach(new DieButton(12), 1, 1, 1, 1);
-			attach(new DieButton(20), 2, 1, 1, 1);
-			
-			attach(new DieButton(100), 0, 2, 3, 1);
+			return row;
 		}
 	}
 	
 	public class DieButton : Button
 	{
-		public Die die { get; protected set; }
+		public Die die { get; construct; }
 		
 		public DieButton(int sides)
 		{
-			die = new Die(sides);
+			Object(die: new Die(sides));
 			label = die.toString();
 		}
 		
