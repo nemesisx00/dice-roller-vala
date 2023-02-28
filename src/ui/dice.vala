@@ -44,7 +44,7 @@ namespace Diceroller.UI
 		public override void clicked()
 		{
 			var roll = die.roll(5);
-			stdout.printf("%s\n", roll.toString());
+			stdout.printf("%s\n", roll.toJson());
 		}
 	}
 }
