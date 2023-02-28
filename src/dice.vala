@@ -1,4 +1,5 @@
 using Gee;
+using Diceroller.UI;
 
 namespace Diceroller
 {
