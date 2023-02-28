@@ -1,5 +1,4 @@
 using Gee;
-using GLib;
 
 namespace Diceroller
 {

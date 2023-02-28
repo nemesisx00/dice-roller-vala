@@ -1,9 +1,7 @@
-using Gtk;
-using GLib;
 using Diceroller;
 
 int main(string[] args)
 {
-	var app = new App("vala.diceroller");
+	var app = new App();
 	return app.run(args);
 }
