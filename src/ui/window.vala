@@ -53,8 +53,9 @@ namespace Diceroller.UI
 		{
 			result.clear();
 			
-			result.setDie(Die.d6, 3); //3d6
-			result.increment(Die.d6); //4d6
+			result.increment(Die.d6);
+			result.setDie(Die.d6, 2);
+			result.increment(Die.d6);
 			result.setDie(Die.d8, 1);
 			result.setDie(Die.d12, 2);
 			
