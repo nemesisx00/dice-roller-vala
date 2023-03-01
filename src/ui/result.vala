@@ -36,15 +36,14 @@ namespace Diceroller.UI
 		/**
 		 * Clear the {@link TreeMap} of all stored {@link Die}-quantity pairs.
 		 * 
-		 * Also triggers an update.
+		 * Also triggers an update to clear the equation.
 		 * 
-		 * @see ResultBox.update()
+		 * @see ResultBox.updateEquation()
 		 */
 		public void clear()
 		{
 			rollCounts.clear();
-			
-			update();
+			updateEquation();
 		}
 		
 		/**
@@ -55,6 +54,7 @@ namespace Diceroller.UI
 		public void increment(Die die)
 		{
 			rollCounts[die] = rollCounts[die] + 1;
+			updateEquation();
 		}
 		
 		/**
@@ -71,6 +71,8 @@ namespace Diceroller.UI
 			
 			if(rollCounts[die] < 0)
 				rollCounts.unset(die);
+			
+			updateEquation();
 		}
 		
 		/**
@@ -87,15 +89,25 @@ namespace Diceroller.UI
 				rollCounts[die] = quantity;
 			else
 				rollCounts.unset(die);
+			
+			updateEquation();
 		}
 		
 		/**
-		 * Update the equation and output {@link Widget}s based on the current
-		 * state of the stored {@link Die}-quantity pairs.
+		 * Update the equation {@link Label} based on the current state of the
+		 * stored {@link Die}-quantity pairs.
 		 */
-		public void update(RollType type = RollType.Normal, bool showRolls = false)
+		public void updateEquation()
 		{
 			equation.label = buildEquation();
+		}
+		
+		/**
+		 * Update the output {@link Label} based on the current state of the
+		 * stored {@link Die}-quantity pairs.
+		 */
+		public void updateOutput(RollType type = RollType.Normal, bool showRolls = false)
+		{
 			output.label = buildOutput(type, showRolls);
 		}
 		
@@ -129,8 +141,8 @@ namespace Diceroller.UI
 		 * @param showRolls A boolean flag determining whether or not the rolls
 		 * string is appended to the output string.
 		 * 
-		 * @return Returns the fully formed output string ready to be displayed
-		 * to the user.
+		 * @return The fully formed output string ready to be displayed to the
+		 * user.
 		 */
 		private string buildOutput(RollType type, bool showRolls)
 		{
@@ -142,12 +154,22 @@ namespace Diceroller.UI
 			{
 				var roll = die.roll(rollCounts[die]);
 				
-				processRolls(rollsBuilder, roll);
+				processRolls(rollsBuilder, roll, die);
 				var intermediateValue = processIntermediateValues(intermediateBuilder, roll, type);
 				finalValue = finalValue + intermediateValue;
 			}
 			
-			return composeOutput(rollsBuilder.str, intermediateBuilder.str, finalValue, type, showRolls);
+			var output = "";
+			if(finalValue > 0)
+			{
+				var intermediate = "";
+				if(rollCounts.keys.size > 1)
+					intermediate = intermediateBuilder.str;
+				
+				output = composeOutput(rollsBuilder.str, intermediate, finalValue, type, showRolls);
+			}
+			
+			return output;
 		}
 		
 		/**
@@ -169,18 +191,20 @@ namespace Diceroller.UI
 		{
 			var builder = new StringBuilder();
 			
-			if(type == RollType.TakeHighest)
-				builder.append("Take Highest ");
-			else if(type == RollType.TakeLowest)
-				builder.append("Take Lowest ");
-			
 			if(showRolls)
-			{
 				builder.append(rolls);
-				builder.append(" => ");
+			
+			if(intermediate.length > 1)
+			{
+				if(showRolls)
+					builder.append(" -> ");
+				
+				builder.append(intermediate);
 			}
-			builder.append(intermediate);
-			builder.append(" = ");
+			
+			if(showRolls || intermediate.length > 1)
+				builder.append(" = ");
+			
 			builder.append(@"$value");
 			
 			return builder.str;
@@ -227,8 +251,9 @@ namespace Diceroller.UI
 		 * @param builder The {@link StringBuilder} to which to append the
 		 * generated string(s).
 		 * @param roll The {@link Roll} which provides the desired values.
+		 * @param die The {@link Die} which was rolled.
 		 */
-		private void processRolls(StringBuilder builder, Roll roll)
+		private void processRolls(StringBuilder builder, Roll roll, Die die)
 		{
 			if(builder.len > 0)
 				builder.append(" + ");
@@ -240,7 +265,10 @@ namespace Diceroller.UI
 				if(i > 0)
 					builder.append(", ");
 				else
-					builder.append("[");
+				{
+					var sides = die.sides;
+					builder.append(@"d$sides[");
+				}
 				
 				builder.append(@"$value");
 				
