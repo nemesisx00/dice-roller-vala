@@ -5,6 +5,8 @@ namespace Diceroller.UI
 {
 	public class DiceButtons : Box
 	{
+		public signal void incrementDie(Die die);
+		
 		public DiceButtons()
 		{
 			Object(orientation: Orientation.VERTICAL, spacing: App.DefaultSpacing);
@@ -23,7 +25,11 @@ namespace Diceroller.UI
 			row.homogeneous = true;
 			
 			foreach(int s in sides)
-				row.append(new DieButton(s));
+			{
+				var button = new DieButton(s);
+				button.clicked.connect(() => incrementDie(button.die));
+				row.append(button);
+			}
 			
 			return row;
 		}
@@ -37,12 +43,6 @@ namespace Diceroller.UI
 		{
 			Object(die: new Die(sides));
 			label = die.toString();
-		}
-		
-		public override void clicked()
-		{
-			var roll = die.roll(5);
-			stdout.printf("%s\n", roll.toJson());
 		}
 	}
 }
