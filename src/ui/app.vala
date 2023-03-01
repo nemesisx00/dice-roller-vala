@@ -4,6 +4,8 @@ namespace Diceroller.UI
 {
 	public class App : Gtk.Application
 	{
+		public const int DefaultSpacing = 5;
+		
 		private const string AppId = "vala.diceroller";
 		private const string AppTitle = "Dice Roller (Vala)";
 		

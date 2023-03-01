@@ -10,6 +10,7 @@ sources = files(
 	'src/dice.vala',
 	'src/ui/app.vala',
 	'src/ui/dice.vala',
+	'src/ui/result.vala',
 	'src/ui/window.vala',
 )
 

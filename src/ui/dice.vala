@@ -5,11 +5,9 @@ namespace Diceroller.UI
 {
 	public class DiceButtons : Box
 	{
-		private const int Spacing = 5;
-		
 		public DiceButtons()
 		{
-			Object(orientation: Orientation.VERTICAL, spacing: Spacing);
+			Object(orientation: Orientation.VERTICAL, spacing: App.DefaultSpacing);
 		}
 		
 		construct
@@ -21,7 +19,7 @@ namespace Diceroller.UI
 		
 		private Box generateRow(int[] sides)
 		{
-			var row = new Box(Orientation.HORIZONTAL, Spacing);
+			var row = new Box(Orientation.HORIZONTAL, App.DefaultSpacing);
 			row.homogeneous = true;
 			
 			foreach(int s in sides)
