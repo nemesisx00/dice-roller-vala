@@ -6,7 +6,7 @@ namespace Diceroller.UI
 	{
 		public const int DefaultSpacing = 5;
 		
-		private const string AppId = "vala.diceroller";
+		private const string AppId = "com.github.nemesisx00.diceroller.vala";
 		private const string AppTitle = "Dice Roller (Vala)";
 		
 		private MainWindow window { get; set; }

@@ -1,4 +1,4 @@
-project('diceroller', 'vala')
+project('diceroller', 'vala', version: '0.5')
 
 dependencies = [
 	dependency('gee-0.8'),
