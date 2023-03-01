@@ -5,6 +5,7 @@ namespace Diceroller.UI
 {
 	public class DiceButtons : Box
 	{
+		public signal void decrementDie(Die die);
 		public signal void incrementDie(Die die);
 		
 		public DiceButtons()
@@ -27,7 +28,14 @@ namespace Diceroller.UI
 			foreach(int s in sides)
 			{
 				var button = new DieButton(s);
+				
+				var rightClick = new GestureClick();
+				rightClick.button = 3;
+				rightClick.pressed.connect(() => decrementDie(button.die));
+				
+				button.add_controller(rightClick);
 				button.clicked.connect(() => incrementDie(button.die));
+				
 				row.append(button);
 			}
 			
