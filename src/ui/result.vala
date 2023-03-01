@@ -7,7 +7,6 @@ namespace Diceroller.UI
 	public class ResultBox : Box
 	{
 		public TreeMap<Die, int> rollCounts { get; protected set; }
-		public TreeMap<Die, Roll?> results { get; protected set; }
 		
 		private Label equation { get; set; }
 		private Label output { get; set; }
@@ -20,7 +19,6 @@ namespace Diceroller.UI
 		construct
 		{
 			rollCounts = new TreeMap<Die, int>((a, b) => a.sides - b.sides);
-			results = new TreeMap<Die, Roll?>((a, b) => a.sides - b.sides);
 			
 			//Equation line
 			equation = new Label(null);
@@ -36,7 +34,6 @@ namespace Diceroller.UI
 		public void clear()
 		{
 			rollCounts.clear();
-			results.clear();
 			
 			update();
 		}
@@ -89,9 +86,9 @@ namespace Diceroller.UI
 			var intermediateBuilder = new StringBuilder();
 			int finalValue = 0;
 			
-			foreach(Die die in results.keys)
+			foreach(Die die in rollCounts.keys)
 			{
-				var roll = results[die];
+				var roll = die.roll(rollCounts[die]);
 				
 				//Rolls
 				if(rollsBuilder.len > 0)

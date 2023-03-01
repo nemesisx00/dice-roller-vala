@@ -58,10 +58,6 @@ namespace Diceroller.UI
 			result.setDie(Die.d8, 1);
 			result.setDie(Die.d12, 2);
 			
-			result.results[Die.d6] = Die.d6.roll(4);
-			result.results[Die.d8] = Die.d8.roll();
-			result.results[Die.d12] = Die.d12.roll(2);
-			
 			result.update(RollType.Normal, true);
 		}
 		
@@ -72,9 +68,6 @@ namespace Diceroller.UI
 			result.setDie(Die.d6, 2);
 			result.setDie(Die.d20, 2);
 			
-			result.results[Die.d6] = Die.d6.roll(2);
-			result.results[Die.d20] = Die.d20.roll(2);
-			
 			result.update(RollType.TakeHighest, true);
 		}
 		
@@ -84,9 +77,6 @@ namespace Diceroller.UI
 			
 			result.setDie(Die.d8, 2);
 			result.setDie(Die.d12, 2);
-			
-			result.results[Die.d8] = Die.d8.roll(2);
-			result.results[Die.d12] = Die.d12.roll(2);
 			
 			result.update(RollType.TakeLowest, true);
 		}
