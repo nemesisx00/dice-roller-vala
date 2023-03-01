@@ -69,7 +69,7 @@ namespace Diceroller.UI
 		{
 			rollCounts[die] = rollCounts[die] - 1;
 			
-			if(rollCounts[die] < 0)
+			if(rollCounts[die] <= 0)
 				rollCounts.unset(die);
 			
 			updateEquation();
@@ -152,11 +152,14 @@ namespace Diceroller.UI
 			
 			foreach(Die die in rollCounts.keys)
 			{
-				var roll = die.roll(rollCounts[die]);
-				
-				processRolls(rollsBuilder, roll, die);
-				var intermediateValue = processIntermediateValues(intermediateBuilder, roll, type);
-				finalValue = finalValue + intermediateValue;
+				if(rollCounts[die] > 0)
+				{
+					var roll = die.roll(rollCounts[die]);
+					
+					processRolls(rollsBuilder, roll, die);
+					var intermediateValue = processIntermediateValues(intermediateBuilder, roll, type);
+					finalValue = finalValue + intermediateValue;
+				}
 			}
 			
 			var output = "";
